@@ -14,6 +14,7 @@ import time
 from datetime import datetime
 import pickle
 
+
 def saveBlockChain(blockchain):
     file_name = 'BlockChain.pkl'
 
@@ -35,7 +36,7 @@ def createBlockChain(difficulty, blockSize, trustedPublicKey, coinToken, genesis
         [genesis_output], [], None, time.time())
     blockchain.createGenesisBlock(genesis_transaction)
     saveBlockChain(blockchain)
-    return {"Response":"BlockChain Created Successfully"}
+    return {"Response": "BlockChain Created Successfully"}
 
 
 def getBalance(publicKey, token):
@@ -44,7 +45,7 @@ def getBalance(publicKey, token):
     balance = 0
     for output in spendable_outputs:
         balance += output.getValue()
-    return {"Public Key":publicKey, "Token":token, "Balance":balance}
+    return {"Public Key": publicKey, "Token": token, "Balance": balance}
 
 
 def makeTransaction(sender, reciever, amount, token, privateKey, smartContract, allowContract):
@@ -52,14 +53,17 @@ def makeTransaction(sender, reciever, amount, token, privateKey, smartContract, 
     verified_owner = verifySignature(
         sender, "test", signHash(privateKey, "test"))
     if (verified_owner):
+        if (sender == reciever):
+            return {"Status": False, "Response": "Self Transaction not allowed"}
+
         balance = getBalance(sender, token)["Balance"]
         if (balance < amount):
-            return {"Status":False, "Response":"Insufficient Balance"}
+            return {"Status": False, "Response": "Insufficient Balance"}
         if (amount <= 0):
-            return {"Status":False, "Response":"Invalid Amount for Transaction"}
-        
-        if(not allowContract and sender == blockchain.getTrustedPublicKey() and smartContract is not None):
-            return {"Status":False, "Response":"Invalid Transaction, set Smart Contract to None"}
+            return {"Status": False, "Response": "Invalid Amount for Transaction"}
+
+        if (not allowContract and sender == blockchain.getTrustedPublicKey() and smartContract is not None):
+            return {"Status": False, "Response": "Invalid Transaction, set Smart Contract to None"}
 
         spendableOutputs = blockchain.getSpendableOutputs(sender, token)
 
@@ -67,7 +71,8 @@ def makeTransaction(sender, reciever, amount, token, privateKey, smartContract, 
         amt = 0
         for output in spendableOutputs:
             amt += output.getValue()
-            [blockNumber, transactionHash] = blockchain.getOutputPosition(output)
+            [blockNumber, transactionHash] = blockchain.getOutputPosition(
+                output)
 
             input = Input(blockNumber, transactionHash, output.getIndex(),
                           signHash(privateKey, output.getHash()))
@@ -83,28 +88,41 @@ def makeTransaction(sender, reciever, amount, token, privateKey, smartContract, 
             outputs.append(output2)
 
         tx = Transaction(outputs, inputs, smartContract, time.time())
+        #
+        print()
+        print("Referenced Inputs : ")
+        print(inputs[0].getBlockNumber(), "___", inputs[0].getOutputIndex(
+        ), "___", inputs[0].getTransactionHash())
+        print(inputs[1].getBlockNumber(), "___", inputs[1].getOutputIndex(
+        ), "___", inputs[1].getTransactionHash())
+
+        print("Referenced Outputs : ")
+        print(outputs[0].getIndex(), "___", outputs[0].getValue())
+        print(outputs[1].getIndex(), "___", outputs[1].getValue())
+        print()
+        #
         verified = blockchain.addTransaction(tx)
-        if(verified[0]):
+        if (verified[0]):
             saveBlockChain(blockchain)
-            return{"Status":True, "Response":verified[1]}
+            return {"Status": True, "Response": verified[1]}
         else:
-            return{"Status":False, "Response":verified[1]}
+            return {"Status": False, "Response": verified[1]}
     else:
-        return {"Status":False, "Response":"Invalid Private Key"}
+        return {"Status": False, "Response": "Invalid Private Key"}
 
 
 def issueTransaction(owner, amount, token, privateKey):
     blockchain = loadBlockChain()
-    if(owner != blockchain.getTrustedPublicKey()):
-        return {"Status":False, "Response":"Only trusted account can make issue transactions"}
+    if (owner != blockchain.getTrustedPublicKey()):
+        return {"Status": False, "Response": "Only trusted account can make issue transactions"}
     verified_owner = verifySignature(
         owner, "test", signHash(privateKey, "test"))
     if (verified_owner):
         nft_allowed = blockchain.isTokenAllowed(token)
         if (nft_allowed == "not_allowed"):
-            return {"Status":False, "Response":"Token not unique"}
+            return {"Status": False, "Response": "Token not unique"}
         elif (nft_allowed == "allowed" and amount != 1):
-            return {"Status":False, "Response":"Only 1 nft must be issued per transaction"}
+            return {"Status": False, "Response": "Only 1 nft must be issued per transaction"}
         else:
             inputs = []
             outputs = [Output(0, amount, token, owner)]
@@ -112,11 +130,11 @@ def issueTransaction(owner, amount, token, privateKey):
             verified = blockchain.addTransaction(tx)
             if (verified[0]):
                 saveBlockChain(blockchain)
-                return {"Status":True, "Response":verified[1]}
+                return {"Status": True, "Response": verified[1]}
             else:
-                return {"Status":False, "Response":verified[1]}
+                return {"Status": False, "Response": verified[1]}
     else:
-        return {"Status":False, "Response":"Invalid Owner Private Key"}
+        return {"Status": False, "Response": "Invalid Owner Private Key"}
 
 
 def printBlockChain():
@@ -143,7 +161,7 @@ def generateEncryptionKeysPair():
         encoding=serialization.Encoding.PEM,
         format=serialization.PublicFormat.SubjectPublicKeyInfo
     )
-    return {"Public Key":pem_public, "Private Key" :pem_private}
+    return {"Public Key": pem_public, "Private Key": pem_private}
 
 
 def signHash(privateKey, hash):
@@ -191,30 +209,30 @@ def expireContract(contract, trustedPrivateKey):
     blockchain = loadBlockChain()
     dic = blockchain.contractStatus(contract)
     if (dic["status"] != "Unexecuted"):
-        return {"Status":False, "Response":"Contract have already been executed, Check contract status"}
+        return {"Status": False, "Response": "Contract have already been executed, Check contract status"}
 
     if (dic["conditions"] == "Unsatisfied"):
         makeTransaction(blockchain.getTrustedPublicKey(
-        ), contract.getSellerPublicKey(), dic["paidSellingAmount"], contract.getSellingToken(), trustedPrivateKey, contract,True)
+        ), contract.getSellerPublicKey(), dic["paidSellingAmount"], contract.getSellingToken(), trustedPrivateKey, contract, True)
         makeTransaction(blockchain.getTrustedPublicKey(
         ), contract.getBuyerPublicKey(), dic["paidBuyingAmount"], contract.getBuyingToken(), trustedPrivateKey, contract, True)
-        return {"Status":True, "Response":"Contract Expired Successfully"}
+        return {"Status": True, "Response": "Contract Expired Successfully"}
 
 
 def executeContract(contract, trustedPrivateKey):
     blockchain = loadBlockChain()
     dic = blockchain.contractStatus(contract)
     if (dic["status"] != "Unexecuted"):
-        return {"Status":False, "Response":"Contract have already been executed, Check contract status"}
+        return {"Status": False, "Response": "Contract have already been executed, Check contract status"}
 
     if (dic["conditions"] == "Satisfied"):
         print(makeTransaction(blockchain.getTrustedPublicKey(
         ), contract.getSellerPublicKey(), dic["paidBuyingAmount"], contract.getBuyingToken(), trustedPrivateKey, contract, True))
         print(makeTransaction(blockchain.getTrustedPublicKey(
-        ), contract.getBuyerPublicKey(), dic["paidSellingAmount"], contract.getSellingToken(), trustedPrivateKey, contract,True))
-        return {"Status":True, "Response":"Contract Executed Successfully"}
+        ), contract.getBuyerPublicKey(), dic["paidSellingAmount"], contract.getSellingToken(), trustedPrivateKey, contract, True))
+        return {"Status": True, "Response": "Contract Executed Successfully"}
     else:
-        return {"Status":False, "Response":"Contract conditions not satisfied yet, Contract can't be executed"}
+        return {"Status": False, "Response": "Contract conditions not satisfied yet, Contract can't be executed"}
 
 
 def getContractStatus(contract):
@@ -226,18 +244,22 @@ def getSmartContract(contract):
     date = datetime.strptime(contract.expiryDate, '%d-%m-%Y').date()
     return smartContract(contract.id, contract.sellerPublicKey.replace('\\n', '\n').replace('\\t', '\t').encode('utf-8'), contract.sellingAmount, contract.sellingToken, contract.buyerPublicKey.replace('\\n', '\n').replace('\\t', '\t').encode('utf-8'), contract.buyingAmount, contract.buyingToken, date, contract.physicalAsset)
 
+
 def readableSmartContract(contract):
-    if(contract is None):
+    if (contract is None):
         return "None"
-    return {"id":contract.getId(), "sellerPublicKey":contract.getSellerPublicKey(), "sellingAmount":contract.getSellingAmount(), "sellingToken":contract.getSellingToken(), "buyerPublicKey":contract.getBuyerPublicKey(), "buyingAmount":contract.getBuyingAmount(), "buyingToken":contract.getBuyingToken(), "expiryDate":contract.getBuyingToken(), "physicalAsset":contract.getPhysicalAsset()}
+    return {"id": contract.getId(), "sellerPublicKey": contract.getSellerPublicKey(), "sellingAmount": contract.getSellingAmount(), "sellingToken": contract.getSellingToken(), "buyerPublicKey": contract.getBuyerPublicKey(), "buyingAmount": contract.getBuyingAmount(), "buyingToken": contract.getBuyingToken(), "expiryDate": contract.getBuyingToken(), "physicalAsset": contract.getPhysicalAsset()}
+
 
 def getAllTransactions():
     blockchain = loadBlockChain()
     transactions = blockchain.getAllTransactions()
     response = {}
     for i in range(len(transactions)):
-        response["Transaction "+str(i+1)] = readableTransaction(transactions[i])
+        response["Transaction " +
+                 str(i+1)] = readableTransaction(transactions[i])
     return response
+
 
 def readableTransaction(transaction):
     blockchain = loadBlockChain()
@@ -248,55 +270,75 @@ def readableTransaction(transaction):
         sender = blockchain.getReferencedOutput(inputs[0])[1].getPublicKey()
     reciever = ""
     token = transaction.getOutputs()[0].getToken()
-    for output in transaction.getOutputs():
+    outputs = transaction.getOutputs()
+    for output in outputs:
         if (output.getPublicKey() != sender):
             reciever = output.getPublicKey()
     Amount = 0
-    for output in transaction.getOutputs():
+    for output in outputs:
         if (output.getPublicKey() != sender):
             Amount += output.getValue()
     contract_id = "None"
     contract = transaction.getSmartContract()
-    if(contract):
+    if (contract):
         contract_id = contract.getId()
-    return {"Sender": str(sender), "Reciever": str(reciever), "Amount": str(Amount), "Token": str(token), "Time Stamp": datetime.fromtimestamp(transaction.getTimeStamp()).strftime("%m/%d/%Y, %H:%M:%S"), "transactionHash":transaction.getTransactionHash(), "smartContract":contract_id}
+
+    new_inputs = {}
+    i = 0
+    for input in inputs:
+        new_inputs["Input " + str(i)] = {"Block Number": input.getBlockNumber(
+        ), "Transaction Hash": input.getTransactionHash(), "Output Index": input.getOutputIndex()}
+        i += 1
+
+    new_outputs = {}
+    i = 0
+    for output in outputs:
+        new_outputs["Output " + str(i)] = {"Index": output.getIndex(), "Value": output.getValue(
+        ), "Token": output.getToken(), "Public Key": output.getPublicKey()}
+        i += 1
+
+    return {"Sender": str(sender), "Reciever": str(reciever), "Amount": str(Amount), "Token": str(token), "Inputs": new_inputs, "Outputs": new_outputs, "Time Stamp": datetime.fromtimestamp(transaction.getTimeStamp()).strftime("%m/%d/%Y, %H:%M:%S"), "transactionHash": transaction.getTransactionHash(), "smartContract": contract_id}
 
 
 def getNFTHistory(nft):
     blockchain = loadBlockChain()
     if (nft == blockchain.getCoinToken()):
-        return {"Status":False, "Response":"Coin Tokens can not be tracked"}
+        return {"Status": False, "Response": "Coin Tokens can not be tracked"}
     transactions = blockchain.getAllTransactions()
 
     response = {}
     i = 0
     for transaction in transactions:
         tx = readableTransaction(transaction)
-        if(tx["Token"] == nft):
+        if (tx["Token"] == nft):
             response["Transaction"+str(i+1)] = tx
             i += 1
-    return {"Status":True, "Response":response}
-        
+    return {"Status": True, "Response": response}
+
+
 def getBlockChain():
     blockchain = loadBlockChain()
     chain = blockchain.getBlockChain()
     response = {}
     for key in chain:
-        if(key != "Transaction Pool" and key != "Chain"):
+        if (key != "Transaction Pool" and key != "Chain"):
             response[key] = chain[key]
     d = {}
 
     for i in range(len(chain["Chain"])):
-        d["Block "+str(i)] = {"Index":chain["Chain"][i].getIndex(), "Merkle Root Hash":chain["Chain"][i].getMerkleRoot().data,"Self Hash":chain["Chain"][i].calculateHash() ,"Previous Hash":chain["Chain"][i].getPreviousHash(), "Difficulty":chain["Chain"][i].getDifficulty(), "Nonce":chain["Chain"][i].getNonce()}
+        d["Block "+str(i)] = {"Index": chain["Chain"][i].getIndex(), "Merkle Root Hash": chain["Chain"][i].getMerkleRoot().data, "Self Hash": chain["Chain"]
+                              [i].calculateHash(), "Previous Hash": chain["Chain"][i].getPreviousHash(), "Difficulty": chain["Chain"][i].getDifficulty(), "Nonce": chain["Chain"][i].getNonce()}
         d["Block "+str(i)]["Transactions"] = {}
         for j in range(len(chain["Chain"][i].getTransactions())):
-            d["Block "+str(i)]["Transactions"]["Transaction"+str(j+1)] = readableTransaction(chain["Chain"][i].getTransactions()[j])
-    
+            d["Block "+str(i)]["Transactions"]["Transaction"+str(j+1)
+                                               ] = readableTransaction(chain["Chain"][i].getTransactions()[j])
+
     response["Blocks"] = d
     response["Transactions Pool"] = {}
     for j in range(len(chain["Transaction Pool"])):
-        response["Transactions Pool"]["Transaction"+str(j+1)] = readableTransaction(chain["Transaction Pool"][j])
-    
+        response["Transactions Pool"]["Transaction" +
+                                      str(j+1)] = readableTransaction(chain["Transaction Pool"][j])
+
     response["Blockchain Validation"] = blockchain.validateBlockChain()
 
     return response

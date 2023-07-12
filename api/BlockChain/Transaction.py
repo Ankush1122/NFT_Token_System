@@ -12,8 +12,8 @@ class Transaction:
         self.__inputs = inputs
         self.__outputs = outputs
         self.__smartContract = smartContract
-        self.__transactionHash = self.calculateHash()
         self.__timeStamp = timeStamp
+        self.__transactionHash = self.calculateHash()
 
     def calculateHash(self):
         hash = ""

@@ -128,6 +128,7 @@ class BlockChain:
 
         for output in refOutputs:
             if (output not in spendableOutputs):
+                print(output.getValue())
                 return [False, "Referenced Input is not Spendable"]
 
         for output in outputs:
@@ -225,7 +226,8 @@ class BlockChain:
         return [blockIndex, transactionHash]
 
     def getBlockChain(self):
-        blockchain = {"Difficulty":self.__difficulty, "Trusted Public Key":self.__trustedPublicKey, "Block Size":self.__blockSize, "Coin Token":self.__coinToken, "Transaction Pool":self.__transactionPool, "Chain":self.__chain}
+        blockchain = {"Difficulty": self.__difficulty, "Trusted Public Key": self.__trustedPublicKey, "Block Size": self.__blockSize,
+                      "Coin Token": self.__coinToken, "Transaction Pool": self.__transactionPool, "Chain": self.__chain}
         return blockchain
 
     def printBlockChain(self) -> None:
