@@ -128,7 +128,6 @@ class BlockChain:
 
         for output in refOutputs:
             if (output not in spendableOutputs):
-                print(output.getValue())
                 return [False, "Referenced Input is not Spendable"]
 
         for output in outputs:

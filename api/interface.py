@@ -88,19 +88,7 @@ def makeTransaction(sender, reciever, amount, token, privateKey, smartContract, 
             outputs.append(output2)
 
         tx = Transaction(outputs, inputs, smartContract, time.time())
-        #
-        print()
-        print("Referenced Inputs : ")
-        print(inputs[0].getBlockNumber(), "___", inputs[0].getOutputIndex(
-        ), "___", inputs[0].getTransactionHash())
-        print(inputs[1].getBlockNumber(), "___", inputs[1].getOutputIndex(
-        ), "___", inputs[1].getTransactionHash())
 
-        print("Referenced Outputs : ")
-        print(outputs[0].getIndex(), "___", outputs[0].getValue())
-        print(outputs[1].getIndex(), "___", outputs[1].getValue())
-        print()
-        #
         verified = blockchain.addTransaction(tx)
         if (verified[0]):
             saveBlockChain(blockchain)
