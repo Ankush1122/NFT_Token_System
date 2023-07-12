@@ -45,7 +45,7 @@ def getBalance(publicKey, token):
     balance = 0
     for output in spendable_outputs:
         balance += output.getValue()
-    return {"Public Key": publicKey, "Token": token, "Balance": balance}
+    return {"publicKey": publicKey, "Token": token, "Balance": balance}
 
 
 def makeTransaction(sender, reciever, amount, token, privateKey, smartContract, allowContract):
@@ -149,7 +149,7 @@ def generateEncryptionKeysPair():
         encoding=serialization.Encoding.PEM,
         format=serialization.PublicFormat.SubjectPublicKeyInfo
     )
-    return {"Public Key": pem_public, "Private Key": pem_private}
+    return {"publicKey": pem_public, "privateKey": pem_private}
 
 
 def signHash(privateKey, hash):
