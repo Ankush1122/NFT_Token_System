@@ -61,4 +61,4 @@ class Block:
             i += 1
 
     def __str__(self) -> str:
-        return str(self.__index) + str(self.__merkleRoot.data) + str(self.__previousHash) + str(self.__difficulty) + str(self.__nonce)
+        return str(self.__index) + str(self.__merkleRoot) + str(self.__previousHash) + str(self.__difficulty) + str(self.__nonce)

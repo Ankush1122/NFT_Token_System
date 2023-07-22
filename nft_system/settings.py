@@ -9,12 +9,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-1mgs3ow)n6j-odf8azochf!#0n35z2!o^dqv3xminc1d-u%n@+'
+SECRET_KEY = os.environ['BLOCKCHAIN_SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = [os.environ['BLOCKCHAIN_HOSTS']]
 
 
 # Application definition
@@ -67,11 +67,31 @@ WSGI_APPLICATION = 'nft_system.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
 DATABASES = {
+
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+
+        'NAME': os.environ['BLOCKCHAIN_DB_NAME'],
+
+        'USER': os.environ['BLOCKCHAIN_DB_USER'],
+
+        'PASSWORD': os.environ['BLOCKCHAIN_DB_PASSWORD'],
+
+        'HOST': os.environ['BLOCKCHAIN_DB_HOST'],
+
+        'PORT': os.environ['BLOCKCHAIN_DB_PORT'],
+
     }
+
 }
 
 
@@ -112,7 +132,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
-CSRF_COOKIE_SECURE = False
+CSRF_COOKIE_SECURE = os.environ['BLOCKCHAIN_CSRF_COOKIE_SECURE']
+SESSION_COOKIE_SECURE = os.environ['BLOCKCHAIN_SESSION_COOKIE_SECURE']
+SECURE_SSL_REDIRECT = os.environ['BLOCKCHAIN_SECURE_SSL_REDIRECT']
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
@@ -130,3 +152,77 @@ CORS_ALLOW_METHODS = [
     'OPTIONS',
 ]
 
+
+FORMATTERS = (
+    {
+        "verbose": {
+            "format": "{levelname} {asctime:s} {name} {threadName} {thread:d} {module} {filename} {lineno:d} {name} {funcName} {process:d} {message}",
+            "style": "{",
+        },
+        "simple": {
+            "format": "{levelname} {asctime:s} {name} {module} {filename} {lineno:d} {funcName} {message}",
+            "style": "{",
+        },
+    },
+)
+
+
+HANDLERS = {
+    "console_handler": {
+        "class": "logging.StreamHandler",
+        "formatter": "simple",
+        "level": "DEBUG"
+    },
+    "info_handler": {
+        "class": "logging.handlers.RotatingFileHandler",
+        "filename": f"{BASE_DIR}/logs/info.log",
+        "mode": "a",
+        "encoding": "utf-8",
+        "formatter": "verbose",
+        "level": "INFO",
+        "backupCount": 5,
+        "maxBytes": 1024 * 1024 * 5,  # 5 MB
+    },
+    "error_handler": {
+        "class": "logging.handlers.RotatingFileHandler",
+        "filename": f"{BASE_DIR}/logs/error.log",
+        "mode": "a",
+        "formatter": "verbose",
+        "level": "WARNING",
+        "backupCount": 5,
+        "maxBytes": 1024 * 1024 * 5,  # 5 MB
+    },
+}
+
+LOGGERS = (
+    {
+        "django": {
+            "handlers": ["console_handler", "info_handler"],
+            "level": "INFO",
+        },
+        "django.request": {
+            "handlers": ["error_handler"],
+            "level": "INFO",
+            "propagate": True,
+        },
+        "django.template": {
+            "handlers": ["error_handler"],
+            "level": "DEBUG",
+            "propagate": True,
+        },
+        "django.server": {
+            "handlers": ["error_handler"],
+            "level": "INFO",
+            "propagate": True,
+        },
+    },
+)
+
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": FORMATTERS[0],
+    "handlers": HANDLERS,
+    "loggers": LOGGERS[0],
+}

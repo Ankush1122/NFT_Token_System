@@ -1,3 +1,5 @@
+import traceback
+import logging
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
@@ -12,35 +14,31 @@ from api.BlockChain.BlockChain import BlockChain
 from api.BlockChain.smartContract import smartContract
 import time
 from datetime import datetime
-import pickle
-
-
-def saveBlockChain(blockchain):
-    file_name = 'BlockChain.pkl'
-
-    with open(file_name, 'wb') as file:
-        pickle.dump(blockchain, file)
+from .repo import getBlockchain, add_new_blockchain
+blockchain = None
+logger = logging.getLogger('django')
 
 
 def loadBlockChain():
-    with open('BlockChain.pkl', 'rb') as BlockChain:
-        blockchain = pickle.load(BlockChain)
-    return blockchain
+    logger.info("Blockchain Loaded Successfully")
+    global blockchain
+    blockchain = getBlockchain()
 
 
 def createBlockChain(difficulty, blockSize, trustedPublicKey, coinToken, genesisAmount):
+    global blockchain
     blockchain = BlockChain(difficulty, trustedPublicKey,
                             blockSize, coinToken)
-    genesis_output = Output(0, genesisAmount, coinToken, trustedPublicKey)
-    genesis_transaction = Transaction(
-        [genesis_output], [], None, time.time())
+    add_new_blockchain(difficulty, trustedPublicKey, blockSize, coinToken)
+    genesis_output = Output(0, genesisAmount,
+                            coinToken, trustedPublicKey)
+    genesis_transaction = Transaction([genesis_output], [], None, time.time())
     blockchain.createGenesisBlock(genesis_transaction)
-    saveBlockChain(blockchain)
     return {"Response": "BlockChain Created Successfully"}
 
 
 def getBalance(publicKey, token):
-    blockchain = loadBlockChain()
+    global blockchain
     spendable_outputs = blockchain.getSpendableOutputs(publicKey, token)
     balance = 0
     for output in spendable_outputs:
@@ -49,7 +47,7 @@ def getBalance(publicKey, token):
 
 
 def makeTransaction(sender, reciever, amount, token, privateKey, smartContract, allowContract):
-    blockchain = loadBlockChain()
+    global blockchain
     verified_owner = verifySignature(
         sender, "test", signHash(privateKey, "test"))
     if (verified_owner):
@@ -74,8 +72,8 @@ def makeTransaction(sender, reciever, amount, token, privateKey, smartContract, 
             [blockNumber, transactionHash] = blockchain.getOutputPosition(
                 output)
 
-            input = Input(blockNumber, transactionHash, output.getIndex(),
-                          signHash(privateKey, output.getHash()))
+            input = Input(blockNumber, transactionHash, output.getIndex(
+            ), signHash(privateKey, output.getHash()).hex())
             inputs.append(input)
             if (amt >= amount):
                 break
@@ -91,7 +89,6 @@ def makeTransaction(sender, reciever, amount, token, privateKey, smartContract, 
 
         verified = blockchain.addTransaction(tx)
         if (verified[0]):
-            saveBlockChain(blockchain)
             return {"Status": True, "Response": verified[1]}
         else:
             return {"Status": False, "Response": verified[1]}
@@ -100,7 +97,7 @@ def makeTransaction(sender, reciever, amount, token, privateKey, smartContract, 
 
 
 def issueTransaction(owner, amount, token, privateKey):
-    blockchain = loadBlockChain()
+    global blockchain
     if (owner != blockchain.getTrustedPublicKey()):
         return {"Status": False, "Response": "Only trusted account can make issue transactions"}
     verified_owner = verifySignature(
@@ -117,7 +114,6 @@ def issueTransaction(owner, amount, token, privateKey):
             tx = Transaction(outputs, inputs, None, time.time())
             verified = blockchain.addTransaction(tx)
             if (verified[0]):
-                saveBlockChain(blockchain)
                 return {"Status": True, "Response": verified[1]}
             else:
                 return {"Status": False, "Response": verified[1]}
@@ -126,7 +122,7 @@ def issueTransaction(owner, amount, token, privateKey):
 
 
 def printBlockChain():
-    blockchain = loadBlockChain()
+    global blockchain
     blockchain.printBlockChain()
 
 
@@ -154,7 +150,7 @@ def generateEncryptionKeysPair():
 
 def signHash(privateKey, hash):
     private_key_after = serialization.load_pem_private_key(
-        data=privateKey,
+        data=privateKey.encode('utf-8'),
         password=None,
         backend=default_backend()
     )
@@ -172,7 +168,7 @@ def signHash(privateKey, hash):
 
 def verifySignature(publicKey, hash, signature):
     public_key_after = serialization.load_pem_public_key(
-        data=publicKey,
+        data=publicKey.encode('utf-8'),
         backend=default_backend()
     )
     res = bytes(hash, 'utf-8')
@@ -194,7 +190,7 @@ def verifySignature(publicKey, hash, signature):
 
 
 def expireContract(contract, trustedPrivateKey):
-    blockchain = loadBlockChain()
+    global blockchain
     dic = blockchain.contractStatus(contract)
     if (dic["status"] != "Unexecuted"):
         return {"Status": False, "Response": "Contract have already been executed, Check contract status"}
@@ -208,15 +204,15 @@ def expireContract(contract, trustedPrivateKey):
 
 
 def executeContract(contract, trustedPrivateKey):
-    blockchain = loadBlockChain()
+    global blockchain
     dic = blockchain.contractStatus(contract)
     if (dic["status"] != "Unexecuted"):
         return {"Status": False, "Response": "Contract have already been executed, Check contract status"}
 
     if (dic["conditions"] == "Satisfied"):
-        print(makeTransaction(blockchain.getTrustedPublicKey(
+        logger.info(makeTransaction(blockchain.getTrustedPublicKey(
         ), contract.getSellerPublicKey(), dic["paidBuyingAmount"], contract.getBuyingToken(), trustedPrivateKey, contract, True))
-        print(makeTransaction(blockchain.getTrustedPublicKey(
+        logger.info(makeTransaction(blockchain.getTrustedPublicKey(
         ), contract.getBuyerPublicKey(), dic["paidSellingAmount"], contract.getSellingToken(), trustedPrivateKey, contract, True))
         return {"Status": True, "Response": "Contract Executed Successfully"}
     else:
@@ -224,7 +220,7 @@ def executeContract(contract, trustedPrivateKey):
 
 
 def getContractStatus(contract):
-    blockchain = loadBlockChain()
+    global blockchain
     return blockchain.contractStatus(contract)
 
 
@@ -240,7 +236,7 @@ def readableSmartContract(contract):
 
 
 def getAllTransactions():
-    blockchain = loadBlockChain()
+    global blockchain
     transactions = blockchain.getAllTransactions()
     response = {}
     for i in range(len(transactions)):
@@ -250,7 +246,7 @@ def getAllTransactions():
 
 
 def readableTransaction(transaction):
-    blockchain = loadBlockChain()
+    global blockchain
     inputs = transaction.getInputs()
     if (len(inputs) == 0):
         sender = ""
@@ -285,11 +281,11 @@ def readableTransaction(transaction):
         ), "Token": output.getToken(), "Public Key": output.getPublicKey()}
         i += 1
 
-    return {"Sender": str(sender), "Reciever": str(reciever), "Amount": str(Amount), "Token": str(token), "Inputs": new_inputs, "Outputs": new_outputs, "Time Stamp": datetime.fromtimestamp(transaction.getTimeStamp()).strftime("%m/%d/%Y, %H:%M:%S"), "transactionHash": transaction.getTransactionHash(), "smartContract": contract_id}
+    return {"Sender": str(sender), "Reciever": str(reciever), "Amount": Amount, "Token": str(token), "Inputs": new_inputs, "Outputs": new_outputs, "Time Stamp": datetime.fromtimestamp(float(transaction.getTimeStamp())).strftime("%m/%d/%Y, %H:%M:%S"), "transactionHash": transaction.getTransactionHash(), "smartContract": contract_id}
 
 
 def getNFTHistory(nft):
-    blockchain = loadBlockChain()
+    global blockchain
     if (nft == blockchain.getCoinToken()):
         return {"Status": False, "Response": "Coin Tokens can not be tracked"}
     transactions = blockchain.getAllTransactions()
@@ -305,7 +301,7 @@ def getNFTHistory(nft):
 
 
 def getBlockChain():
-    blockchain = loadBlockChain()
+    global blockchain
     chain = blockchain.getBlockChain()
     response = {}
     for key in chain:
@@ -314,7 +310,7 @@ def getBlockChain():
     d = {}
 
     for i in range(len(chain["Chain"])):
-        d["Block "+str(i)] = {"Index": chain["Chain"][i].getIndex(), "Merkle Root Hash": chain["Chain"][i].getMerkleRoot().data, "Self Hash": chain["Chain"]
+        d["Block "+str(i)] = {"Index": chain["Chain"][i].getIndex(), "Merkle Root Hash": chain["Chain"][i].getMerkleRoot(), "Self Hash": chain["Chain"]
                               [i].calculateHash(), "Previous Hash": chain["Chain"][i].getPreviousHash(), "Difficulty": chain["Chain"][i].getDifficulty(), "Nonce": chain["Chain"][i].getNonce()}
         d["Block "+str(i)]["Transactions"] = {}
         for j in range(len(chain["Chain"][i].getTransactions())):
@@ -327,6 +323,11 @@ def getBlockChain():
         response["Transactions Pool"]["Transaction" +
                                       str(j+1)] = readableTransaction(chain["Transaction Pool"][j])
 
-    response["Blockchain Validation"] = blockchain.validateBlockChain()
+    [chain_connected, valid_proof_of_work,
+        valid_transaction_hashes, valid_block_chain] = blockchain.validateBlockChain()
+    response["Valid Transaction Hashes"] = valid_transaction_hashes
+    response["Valid Block Hashes"] = chain_connected
+    response["Valid Proof of Work"] = valid_proof_of_work
+    response["Valid Blockchain"] = valid_block_chain
 
     return response

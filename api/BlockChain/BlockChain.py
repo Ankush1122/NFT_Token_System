@@ -1,5 +1,9 @@
 from .Block import Block
 from .merkleTree import merkleTree
+from api.repo import addTransactionToDB, addBlockToDB
+import traceback
+import logging
+logger = logging.getLogger('django')
 
 
 class BlockChain:
@@ -10,11 +14,11 @@ class BlockChain:
     __blockSize = None
     __coinToken = None
 
-    def __init__(self, difficulty, trustedPublicKey, blockSize, coinToken) -> None:
-        self.__chain = []
+    def __init__(self, difficulty, trustedPublicKey, blockSize, coinToken, chain=[], transactionPool=[]) -> None:
+        self.__chain = chain
         self.__difficulty = difficulty
         self.__trustedPublicKey = trustedPublicKey
-        self.__transactionPool = []
+        self.__transactionPool = transactionPool
         self.__blockSize = blockSize
         self.__coinToken = coinToken
 
@@ -22,6 +26,7 @@ class BlockChain:
         verified = self.validateTransaction(transaction)
         if (verified[0]):
             self.__transactionPool.append(transaction)
+            addTransactionToDB(transaction)
             if (len(self.__transactionPool) >= self.__blockSize):
                 self.mineBlock(self.__transactionPool)
                 self.__transactionPool = []
@@ -29,8 +34,9 @@ class BlockChain:
 
     def createGenesisBlock(self, genesis_Transaction) -> None:
         verified = self.validateTransaction(genesis_Transaction)
-        print(verified[1])
+        logger.info(verified[1])
         if (verified[0]):
+            addTransactionToDB(genesis_Transaction)
             self.mineBlock([genesis_Transaction])
 
     def mineBlock(self, transactions) -> None:
@@ -41,25 +47,44 @@ class BlockChain:
             previousHash = self.__chain[index - 1].calculateHash()
         tree = merkleTree()
         merkleRoot = tree.create(transactions)
-        block = Block(index, transactions, merkleRoot,
+        block = Block(index, transactions, merkleRoot.data,
                       previousHash, self.__difficulty, 0)
         block.proofOfWork()
         if (block.validateNonce()):
+            logger.info("Nonce Varified")
             self.__chain.append(block)
+            addBlockToDB(block)
+        else:
+            logger.info("Invalid Nonce")
 
     def validateBlockChain(self) -> bool:
         # Chain is Connected
+        chain_connected = True
+        valid_proof_of_work = True
+        valid_transaction_hashes = True
+
         size = len(self.__chain)
         for i in range(1, size):
             if (self.__chain[i].getPreviousHash() != self.__chain[i-1].calculateHash()):
-                return False
+                chain_connected = False
+                break
 
         # Valid Proof Of Work
         for block in self.__chain:
             if (not block.validateNonce()):
-                return False
+                valid_proof_of_work = False
+                break
 
-        return True
+        # Valid Transaction Hashes
+        transactions = self.getAllTransactions()
+        for transaction in transactions:
+            if (transaction.getTransactionHash() != transaction.calculateHash()):
+                valid_transaction_hashes = False
+                break
+
+        valid_block_chain = chain_connected and valid_proof_of_work and valid_transaction_hashes
+
+        return [chain_connected, valid_proof_of_work, valid_transaction_hashes, valid_block_chain]
 
     def getSpendableOutputs(self, publicKey, token):
         spendable_outputs = []
@@ -109,7 +134,7 @@ class BlockChain:
             outputStatus = self.getReferencedOutput(input)
             if (outputStatus[0]):
                 refOutputs.append(outputStatus[1])
-                if (not outputStatus[1].verifySignature(input.getSignature())):
+                if (not outputStatus[1].verifySignature(bytes.fromhex(input.getSignature()))):
                     return [False, "Invalid Signature"]
             else:
                 return [False, "Invalid Inputs"]
@@ -229,6 +254,7 @@ class BlockChain:
                       "Coin Token": self.__coinToken, "Transaction Pool": self.__transactionPool, "Chain": self.__chain}
         return blockchain
 
+    # Not Used
     def printBlockChain(self) -> None:
         print()
         for block in self.__chain:

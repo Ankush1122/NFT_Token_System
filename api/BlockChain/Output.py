@@ -13,6 +13,7 @@ class Output:
     __publicKey = None
 
     def __init__(self, index, value, token, publicKey) -> None:
+        self.__id = id
         self.__index = index
         self.__value = value
         self.__token = token
@@ -38,7 +39,7 @@ class Output:
 
     def verifySignature(self, signature):
         public_key_after = serialization.load_pem_public_key(
-            data=self.__publicKey,
+            data=self.__publicKey.encode('utf-8'),
             backend=default_backend()
         )
         res = bytes(self.getHash(), 'utf-8')
