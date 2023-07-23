@@ -263,5 +263,6 @@ pyrightconfig.json
 # End of https://www.toptal.com/developers/gitignore/api/python,django
  
  # unused files/folders
- crypto.py
- delete_me.txt
+crypto.py
+delete_me.txt
+static_root
