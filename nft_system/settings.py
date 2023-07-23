@@ -9,12 +9,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ['BLOCKCHAIN_SECRET_KEY']
+SECRET_KEY = '43/F/.~nTT!p@?ug"{o{tL?B5)+X/!f{L1*C]dBv{j/YtRA:~nQ(K9%|57s/(n&'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = [os.environ['BLOCKCHAIN_HOSTS']]
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -80,15 +80,15 @@ DATABASES = {
 
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
 
-        'NAME': os.environ['BLOCKCHAIN_DB_NAME'],
+        'NAME': 'defaultdb',
 
-        'USER': os.environ['BLOCKCHAIN_DB_USER'],
+        'USER': 'doadmin',
 
-        'PASSWORD': os.environ['BLOCKCHAIN_DB_PASSWORD'],
+        'PASSWORD': 'AVNS_B4tDRe1UHFRf1hUqWP8',
 
-        'HOST': os.environ['BLOCKCHAIN_DB_HOST'],
+        'HOST': 'db-postgresql-blr1-19429-do-user-14395246-0.b.db.ondigitalocean.com',
 
-        'PORT': os.environ['BLOCKCHAIN_DB_PORT'],
+        'PORT': '25060',
 
     }
 
@@ -132,9 +132,14 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
-CSRF_COOKIE_SECURE = os.environ['BLOCKCHAIN_CSRF_COOKIE_SECURE']
-SESSION_COOKIE_SECURE = os.environ['BLOCKCHAIN_SESSION_COOKIE_SECURE']
-SECURE_SSL_REDIRECT = os.environ['BLOCKCHAIN_SECURE_SSL_REDIRECT']
+MEDIA_URL = '/media/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'env')]
+STATIC_ROOT = os.path.join(BASE_DIR, 'static_root/')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media_root')
+
+CSRF_COOKIE_SECURE = False
+SESSION_COOKIE_SECURE = False
+SECURE_SSL_REDIRECT = False
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 

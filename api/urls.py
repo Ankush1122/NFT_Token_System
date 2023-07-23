@@ -2,7 +2,8 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    #path('create_new_blockchain/', views.create_new_blockchain, name="create_new_blockchain"),
+    path('create_new_blockchain/', views.create_new_blockchain,
+         name="create_new_blockchain"),
     path('get_balance/', views.get_balance, name="get_balance"),
     path('make_transaction/', views.make_transaction, name="make_transaction"),
     path('issue_transaction/', views.issue_transaction, name="issue_transaction"),
