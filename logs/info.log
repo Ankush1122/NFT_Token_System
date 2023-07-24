@@ -1,0 +1,101 @@
+INFO 2023-07-22 21:18:45,143 django.utils.autoreload MainThread 140609343932224 autoreload autoreload.py 668 django.utils.autoreload run_with_reloader 19268 Watching for file changes with StatReloader
+INFO 2023-07-22 21:19:13,388 django.server Thread-1 140609282066176 basehttp basehttp.py 212 django.server log_message 19268 "GET / HTTP/1.1" 301 0
+INFO 2023-07-22 21:19:13,395 django.server Thread-2 140609282066176 basehttp basehttp.py 212 django.server log_message 19268 code 400, message Bad request version ('\x8dÝ\x90Plì\x98`\x87\x05&\x12ÁN)cGºÀ:½¾Ø\x9dØ!A\x94ë\x08Òã\x00"\x13\x01\x13\x03\x13\x02À+À/Ì©Ì¨À,À0À')
+ERROR 2023-07-22 21:19:13,395 django.server Thread-2 140609282066176 basehttp basehttp.py 192 django.server log_message 19268 You're accessing the development server over HTTPS, but it only supports HTTP.
+INFO 2023-07-22 21:20:33,316 django.utils.autoreload MainThread 140609343932224 autoreload autoreload.py 266 django.utils.autoreload trigger_reload 19268 /media/ankush/Data/Projects/Non-Fungible Token System/api/repo.py changed, reloading.
+INFO 2023-07-22 21:20:33,545 django.utils.autoreload MainThread 140371332560704 autoreload autoreload.py 668 django.utils.autoreload run_with_reloader 19532 Watching for file changes with StatReloader
+INFO 2023-07-22 21:22:52,047 django.utils.autoreload MainThread 140371332560704 autoreload autoreload.py 266 django.utils.autoreload trigger_reload 19532 /media/ankush/Data/Projects/Non-Fungible Token System/api/interface.py changed, reloading.
+INFO 2023-07-22 21:22:52,297 django MainThread 140050028377920 interface interface.py 24 django loadBlockChain 19765 Blockchain Loaded Successfully
+INFO 2023-07-22 21:22:52,310 django.utils.autoreload MainThread 140050028377920 autoreload autoreload.py 668 django.utils.autoreload run_with_reloader 19765 Watching for file changes with StatReloader
+INFO 2023-07-22 21:23:07,611 django.utils.autoreload MainThread 140050028377920 autoreload autoreload.py 266 django.utils.autoreload trigger_reload 19765 /media/ankush/Data/Projects/Non-Fungible Token System/api/interface.py changed, reloading.
+INFO 2023-07-22 21:23:07,823 django MainThread 140643730548544 interface interface.py 23 django loadBlockChain 19835 Blockchain Loaded Successfully
+INFO 2023-07-22 21:23:07,837 django.utils.autoreload MainThread 140643730548544 autoreload autoreload.py 668 django.utils.autoreload run_with_reloader 19835 Watching for file changes with StatReloader
+INFO 2023-07-22 21:23:45,381 django.utils.autoreload MainThread 140643730548544 autoreload autoreload.py 266 django.utils.autoreload trigger_reload 19835 /media/ankush/Data/Projects/Non-Fungible Token System/api/interface.py changed, reloading.
+INFO 2023-07-22 21:23:45,602 django MainThread 140151360149312 interface interface.py 23 django loadBlockChain 19901 Blockchain Loaded Successfully
+INFO 2023-07-22 21:23:45,617 django.utils.autoreload MainThread 140151360149312 autoreload autoreload.py 668 django.utils.autoreload run_with_reloader 19901 Watching for file changes with StatReloader
+INFO 2023-07-22 21:24:02,945 django.utils.autoreload MainThread 140151360149312 autoreload autoreload.py 266 django.utils.autoreload trigger_reload 19901 /media/ankush/Data/Projects/Non-Fungible Token System/api/cron.py changed, reloading.
+INFO 2023-07-22 21:24:03,172 django MainThread 140633229309760 interface interface.py 23 django loadBlockChain 19984 Blockchain Loaded Successfully
+INFO 2023-07-22 21:24:03,187 django.utils.autoreload MainThread 140633229309760 autoreload autoreload.py 668 django.utils.autoreload run_with_reloader 19984 Watching for file changes with StatReloader
+INFO 2023-07-22 21:24:27,558 django.utils.autoreload MainThread 140633229309760 autoreload autoreload.py 266 django.utils.autoreload trigger_reload 19984 /media/ankush/Data/Projects/Non-Fungible Token System/api/BlockChain/BlockChain.py changed, reloading.
+INFO 2023-07-22 21:24:27,788 django MainThread 140586978494272 interface interface.py 23 django loadBlockChain 20060 Blockchain Loaded Successfully
+INFO 2023-07-22 21:24:27,803 django.utils.autoreload MainThread 140586978494272 autoreload autoreload.py 668 django.utils.autoreload run_with_reloader 20060 Watching for file changes with StatReloader
+INFO 2023-07-22 21:24:35,025 django.utils.autoreload MainThread 140586978494272 autoreload autoreload.py 266 django.utils.autoreload trigger_reload 20060 /media/ankush/Data/Projects/Non-Fungible Token System/api/BlockChain/BlockChain.py changed, reloading.
+INFO 2023-07-22 21:24:35,243 django MainThread 140536819267392 interface interface.py 23 django loadBlockChain 20122 Blockchain Loaded Successfully
+INFO 2023-07-22 21:24:35,257 django.utils.autoreload MainThread 140536819267392 autoreload autoreload.py 668 django.utils.autoreload run_with_reloader 20122 Watching for file changes with StatReloader
+INFO 2023-07-22 21:25:06,680 django.utils.autoreload MainThread 140536819267392 autoreload autoreload.py 266 django.utils.autoreload trigger_reload 20122 /media/ankush/Data/Projects/Non-Fungible Token System/api/BlockChain/BlockChain.py changed, reloading.
+INFO 2023-07-22 21:25:06,883 django MainThread 139628713592640 interface interface.py 23 django loadBlockChain 20188 Blockchain Loaded Successfully
+INFO 2023-07-22 21:25:06,897 django.utils.autoreload MainThread 139628713592640 autoreload autoreload.py 668 django.utils.autoreload run_with_reloader 20188 Watching for file changes with StatReloader
+INFO 2023-07-22 21:25:56,628 django.utils.autoreload MainThread 139628713592640 autoreload autoreload.py 266 django.utils.autoreload trigger_reload 20188 /media/ankush/Data/Projects/Non-Fungible Token System/api/BlockChain/BlockChain.py changed, reloading.
+INFO 2023-07-22 21:25:56,843 django MainThread 140003985532736 interface interface.py 23 django loadBlockChain 20258 Blockchain Loaded Successfully
+INFO 2023-07-22 21:25:56,858 django.utils.autoreload MainThread 140003985532736 autoreload autoreload.py 668 django.utils.autoreload run_with_reloader 20258 Watching for file changes with StatReloader
+INFO 2023-07-22 22:19:45,160 django MainThread 140388205233984 interface interface.py 23 django loadBlockChain 23093 Blockchain Loaded Successfully
+INFO 2023-07-22 22:20:08,764 django MainThread 140701213914944 interface interface.py 23 django loadBlockChain 23235 Blockchain Loaded Successfully
+INFO 2023-07-22 22:20:58,267 django MainThread 139825902868288 interface interface.py 23 django loadBlockChain 23286 Blockchain Loaded Successfully
+INFO 2023-07-22 22:22:01,544 django MainThread 140371750557504 interface interface.py 23 django loadBlockChain 23357 Blockchain Loaded Successfully
+INFO 2023-07-22 22:28:04,224 django MainThread 140504892241728 interface interface.py 23 django loadBlockChain 24059 Blockchain Loaded Successfully
+INFO 2023-07-22 22:30:33,650 django MainThread 139781920331584 interface interface.py 23 django loadBlockChain 24275 Blockchain Loaded Successfully
+INFO 2023-07-22 22:31:05,052 django MainThread 140309824128832 interface interface.py 23 django loadBlockChain 24327 Blockchain Loaded Successfully
+INFO 2023-07-22 22:32:28,714 django MainThread 140140280751936 interface interface.py 23 django loadBlockChain 24414 Blockchain Loaded Successfully
+INFO 2023-07-22 22:33:30,554 django MainThread 140152308094784 interface interface.py 23 django loadBlockChain 24501 Blockchain Loaded Successfully
+INFO 2023-07-22 22:36:26,974 django MainThread 140074804881216 interface interface.py 23 django loadBlockChain 24920 Blockchain Loaded Successfully
+INFO 2023-07-22 22:37:44,890 django MainThread 140145889400640 interface interface.py 23 django loadBlockChain 25038 Blockchain Loaded Successfully
+INFO 2023-07-22 22:41:39,817 django MainThread 140219077670720 interface interface.py 23 django loadBlockChain 25651 Blockchain Loaded Successfully
+INFO 2023-07-22 22:41:40,344 django MainThread 139816860796736 interface interface.py 23 django loadBlockChain 25653 Blockchain Loaded Successfully
+INFO 2023-07-22 22:41:40,643 django.utils.autoreload MainThread 139816860796736 autoreload autoreload.py 668 django.utils.autoreload run_with_reloader 25653 Watching for file changes with StatReloader
+WARNING 2023-07-22 22:42:05,449 django.request Thread-1 139816787228416 log log.py 241 django.request log_response 25653 Not Found: /api/create_block_chain/
+WARNING 2023-07-22 22:42:05,450 django.server Thread-1 139816787228416 basehttp basehttp.py 212 django.server log_message 25653 "GET /api/create_block_chain/ HTTP/1.1" 404 4482
+WARNING 2023-07-22 22:42:19,403 django.request Thread-1 139816787228416 log log.py 241 django.request log_response 25653 Method Not Allowed: /api/create_new_blockchain/
+WARNING 2023-07-22 22:42:19,404 django.server Thread-1 139816787228416 basehttp basehttp.py 212 django.server log_message 25653 "GET /api/create_new_blockchain/ HTTP/1.1" 405 5717
+INFO 2023-07-22 22:43:25,813 django Thread-2 139816787228416 BlockChain BlockChain.py 37 django createGenesisBlock 25653 Tokens/Coins Issued Successfully
+INFO 2023-07-22 22:43:25,877 django Thread-2 139816787228416 BlockChain BlockChain.py 54 django mineBlock 25653 Nonce Varified
+INFO 2023-07-22 22:43:25,976 django.server Thread-2 139816787228416 basehttp basehttp.py 212 django.server log_message 25653 "POST /api/create_new_blockchain/ HTTP/1.1" 200 5698
+INFO 2023-07-22 22:44:40,784 django.server Thread-2 139816787228416 basehttp basehttp.py 212 django.server log_message 25653 "GET /api/get_blockchain/ HTTP/1.1" 200 11191
+INFO 2023-07-22 22:45:38,092 django.utils.autoreload MainThread 139816860796736 autoreload autoreload.py 266 django.utils.autoreload trigger_reload 25653 /media/ankush/Data/Projects/Non-Fungible Token System/api/urls.py changed, reloading.
+INFO 2023-07-22 22:45:38,404 django MainThread 139924552759104 interface interface.py 23 django loadBlockChain 26177 Blockchain Loaded Successfully
+INFO 2023-07-22 22:45:38,870 django.utils.autoreload MainThread 139924552759104 autoreload autoreload.py 668 django.utils.autoreload run_with_reloader 26177 Watching for file changes with StatReloader
+INFO 2023-07-23 14:08:53,879 django.utils.autoreload MainThread 140499701860160 autoreload autoreload.py 637 django.utils.autoreload run_with_reloader 52763 Watching for file changes with StatReloader
+INFO 2023-07-23 14:09:02,832 django MainThread 140080760792896 interface interface.py 23 django loadBlockChain 52907 Blockchain Loaded Successfully
+INFO 2023-07-23 14:09:03,482 django MainThread 140692464461632 interface interface.py 23 django loadBlockChain 52912 Blockchain Loaded Successfully
+INFO 2023-07-23 14:09:03,925 django.utils.autoreload MainThread 140692464461632 autoreload autoreload.py 668 django.utils.autoreload run_with_reloader 52912 Watching for file changes with StatReloader
+INFO 2023-07-23 14:09:16,531 django MainThread 139656765355840 interface interface.py 23 django loadBlockChain 52968 Blockchain Loaded Successfully
+INFO 2023-07-23 14:09:26,107 django MainThread 140508590831424 interface interface.py 23 django loadBlockChain 53012 Blockchain Loaded Successfully
+INFO 2023-07-23 14:09:26,767 django MainThread 139640244193088 interface interface.py 23 django loadBlockChain 53014 Blockchain Loaded Successfully
+INFO 2023-07-23 14:09:27,929 django.utils.autoreload MainThread 139640244193088 autoreload autoreload.py 668 django.utils.autoreload run_with_reloader 53014 Watching for file changes with StatReloader
+ERROR 2023-07-23 14:09:41,250 django.security.DisallowedHost Thread-1 139640170624768 exception exception.py 124 django.security.DisallowedHost response_for_exception 53014 Invalid HTTP_HOST header: '0.0.0.0:8080'. You may need to add '0.0.0.0' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/home/ankush/.local/share/virtualenvs/Non-Fungible_Token_System-l-Anu2Hx/lib/python3.8/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/ankush/.local/share/virtualenvs/Non-Fungible_Token_System-l-Anu2Hx/lib/python3.8/site-packages/django/utils/deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+  File "/home/ankush/.local/share/virtualenvs/Non-Fungible_Token_System-l-Anu2Hx/lib/python3.8/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/home/ankush/.local/share/virtualenvs/Non-Fungible_Token_System-l-Anu2Hx/lib/python3.8/site-packages/django/http/request.py", line 150, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '0.0.0.0:8080'. You may need to add '0.0.0.0' to ALLOWED_HOSTS.
+WARNING 2023-07-23 14:09:41,395 django.request Thread-1 139640170624768 log log.py 241 django.request log_response 53014 Bad Request: /
+WARNING 2023-07-23 14:09:41,409 django.server Thread-1 139640170624768 basehttp basehttp.py 212 django.server log_message 53014 "GET / HTTP/1.1" 400 85098
+INFO 2023-07-23 14:09:54,338 django.utils.autoreload MainThread 139640244193088 autoreload autoreload.py 266 django.utils.autoreload trigger_reload 53014 /media/ankush/Data/Projects/Non-Fungible Token System/nft_system/settings.py changed, reloading.
+INFO 2023-07-23 14:09:54,585 django MainThread 140082917033792 interface interface.py 23 django loadBlockChain 53181 Blockchain Loaded Successfully
+INFO 2023-07-23 14:09:55,704 django.utils.autoreload MainThread 140082917033792 autoreload autoreload.py 668 django.utils.autoreload run_with_reloader 53181 Watching for file changes with StatReloader
+WARNING 2023-07-23 14:09:59,480 django.request Thread-1 140082774275840 log log.py 241 django.request log_response 53181 Not Found: /
+WARNING 2023-07-23 14:09:59,480 django.server Thread-1 140082774275840 basehttp basehttp.py 212 django.server log_message 53181 "GET / HTTP/1.1" 404 2165
+INFO 2023-07-24 17:37:29,971 django.utils.autoreload MainThread 139880729003840 autoreload autoreload.py 637 django.utils.autoreload run_with_reloader 42467 Watching for file changes with StatReloader
+INFO 2023-07-24 17:37:36,871 django MainThread 140350069593920 interface interface.py 23 django loadBlockChain 42602 Blockchain Loaded Successfully
+INFO 2023-07-24 17:37:37,830 django MainThread 139719330010944 interface interface.py 23 django loadBlockChain 42617 Blockchain Loaded Successfully
+INFO 2023-07-24 17:37:38,645 django.utils.autoreload MainThread 139719330010944 autoreload autoreload.py 668 django.utils.autoreload run_with_reloader 42617 Watching for file changes with StatReloader
+WARNING 2023-07-24 17:37:50,671 django.request Thread-1 139719256442624 log log.py 241 django.request log_response 42617 Not Found: /
+WARNING 2023-07-24 17:37:51,015 django.server Thread-1 139719256442624 basehttp basehttp.py 212 django.server log_message 42617 "GET / HTTP/1.1" 404 2165
+WARNING 2023-07-24 17:37:51,120 django.request Thread-1 139719256442624 log log.py 241 django.request log_response 42617 Not Found: /favicon.ico
+WARNING 2023-07-24 17:37:51,121 django.server Thread-1 139719256442624 basehttp basehttp.py 212 django.server log_message 42617 "GET /favicon.ico HTTP/1.1" 404 2216
+INFO 2023-07-24 17:38:26,096 django.server Thread-1 139719256442624 basehttp basehttp.py 212 django.server log_message 42617 "GET /api/get_blockchain/ HTTP/1.1" 200 13648
+INFO 2023-07-24 17:38:26,160 django.server Thread-3 139719170057984 basehttp basehttp.py 212 django.server log_message 42617 "GET /static/rest_framework/css/prettify.css HTTP/1.1" 200 817
+INFO 2023-07-24 17:38:26,161 django.server Thread-2 139719178450688 basehttp basehttp.py 212 django.server log_message 42617 "GET /static/rest_framework/css/bootstrap-tweaks.css HTTP/1.1" 200 3385
+INFO 2023-07-24 17:38:26,161 django.server Thread-4 139719161665280 basehttp basehttp.py 212 django.server log_message 42617 "GET /static/rest_framework/css/default.css HTTP/1.1" 200 1152
+INFO 2023-07-24 17:38:26,165 django.server Thread-3 139719170057984 basehttp basehttp.py 212 django.server log_message 42617 "GET /static/rest_framework/js/csrf.js HTTP/1.1" 200 1719
+INFO 2023-07-24 17:38:26,166 django.server Thread-1 139719256442624 basehttp basehttp.py 212 django.server log_message 42617 "GET /static/rest_framework/css/bootstrap.min.css HTTP/1.1" 200 121457
+INFO 2023-07-24 17:38:26,166 django.server Thread-6 139719144879872 basehttp basehttp.py 212 django.server log_message 42617 "GET /static/rest_framework/js/ajax-form.js HTTP/1.1" 200 3597
+INFO 2023-07-24 17:38:26,167 django.server Thread-2 139719178450688 basehttp basehttp.py 212 django.server log_message 42617 "GET /static/rest_framework/js/bootstrap.min.js HTTP/1.1" 200 39680
+INFO 2023-07-24 17:38:26,167 django.server Thread-4 139719161665280 basehttp basehttp.py 212 django.server log_message 42617 "GET /static/rest_framework/js/prettify-min.js HTTP/1.1" 200 13632
+INFO 2023-07-24 17:38:26,167 django.server Thread-5 139719153272576 basehttp basehttp.py 212 django.server log_message 42617 "GET /static/rest_framework/js/jquery-3.5.1.min.js HTTP/1.1" 200 89476
+INFO 2023-07-24 17:38:26,492 django.server Thread-6 139719144879872 basehttp basehttp.py 212 django.server log_message 42617 "GET /static/rest_framework/js/default.js HTTP/1.1" 200 1268
+INFO 2023-07-24 17:38:26,493 django.server Thread-1 139719256442624 basehttp basehttp.py 212 django.server log_message 42617 "GET /static/rest_framework/img/grid.png HTTP/1.1" 200 1458

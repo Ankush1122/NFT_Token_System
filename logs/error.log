@@ -1,0 +1,13 @@
+ERROR 2023-07-22 21:19:13,395 django.server Thread-2 140609282066176 basehttp basehttp.py 192 django.server log_message 19268 You're accessing the development server over HTTPS, but it only supports HTTP.
+WARNING 2023-07-22 22:42:05,449 django.request Thread-1 139816787228416 log log.py 241 django.request log_response 25653 Not Found: /api/create_block_chain/
+WARNING 2023-07-22 22:42:05,450 django.server Thread-1 139816787228416 basehttp basehttp.py 212 django.server log_message 25653 "GET /api/create_block_chain/ HTTP/1.1" 404 4482
+WARNING 2023-07-22 22:42:19,403 django.request Thread-1 139816787228416 log log.py 241 django.request log_response 25653 Method Not Allowed: /api/create_new_blockchain/
+WARNING 2023-07-22 22:42:19,404 django.server Thread-1 139816787228416 basehttp basehttp.py 212 django.server log_message 25653 "GET /api/create_new_blockchain/ HTTP/1.1" 405 5717
+WARNING 2023-07-23 14:09:41,395 django.request Thread-1 139640170624768 log log.py 241 django.request log_response 53014 Bad Request: /
+WARNING 2023-07-23 14:09:41,409 django.server Thread-1 139640170624768 basehttp basehttp.py 212 django.server log_message 53014 "GET / HTTP/1.1" 400 85098
+WARNING 2023-07-23 14:09:59,480 django.request Thread-1 140082774275840 log log.py 241 django.request log_response 53181 Not Found: /
+WARNING 2023-07-23 14:09:59,480 django.server Thread-1 140082774275840 basehttp basehttp.py 212 django.server log_message 53181 "GET / HTTP/1.1" 404 2165
+WARNING 2023-07-24 17:37:50,671 django.request Thread-1 139719256442624 log log.py 241 django.request log_response 42617 Not Found: /
+WARNING 2023-07-24 17:37:51,015 django.server Thread-1 139719256442624 basehttp basehttp.py 212 django.server log_message 42617 "GET / HTTP/1.1" 404 2165
+WARNING 2023-07-24 17:37:51,120 django.request Thread-1 139719256442624 log log.py 241 django.request log_response 42617 Not Found: /favicon.ico
+WARNING 2023-07-24 17:37:51,121 django.server Thread-1 139719256442624 basehttp basehttp.py 212 django.server log_message 42617 "GET /favicon.ico HTTP/1.1" 404 2216
